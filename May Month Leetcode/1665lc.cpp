@@ -53,7 +53,7 @@ Constraints:
 1 <= actual​i <= minimumi <= 104*/
 
 /*Solution*/
-#include <vector>    /
+#include <vector>    
 #include <algorithm> 
 
 using namespace std;
