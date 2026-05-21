@@ -39,4 +39,40 @@ Constraints:
 1 <= arr1[i], arr2[i] <= 108
 
 SOLUTION*/
-
+#include<iostream>
+#include<vector>
+#include<unordered_set>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+class Solution {
+public:
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        unordered_set<int> prefixes;
+        
+        // Step 1: Insert all possible prefixes of numbers in arr1
+        for (int val : arr1) {
+            while (val > 0) {
+                prefixes.insert(val);
+                val /= 10;
+            }
+        }
+        
+        int maxLength = 0;
+        
+        // Step 2: Check prefixes of numbers in arr2 against the set
+        for (int val : arr2) {
+            while (val > 0) {
+                if (prefixes.count(val)) {
+                    // Calculate length of the matching prefix mathematically
+                    int currentLength = log10(val) + 1;
+                    maxLength = max(maxLength, currentLength);
+                    break; // Smaller prefixes of this same number won't beat maxLength
+                }
+                val /= 10;
+            }
+        }
+        
+        return maxLength;
+    }
+};
