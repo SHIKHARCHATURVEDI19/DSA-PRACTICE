@@ -35,6 +35,9 @@ nums is an ascending array that is possibly rotated.
 -104 <= target <= 104*/
 
 /*SOLUTION*/
+#include<vector>
+#include<iostream>
+using namespace std;
 
 class Solution {
 public:
