@@ -38,8 +38,11 @@ Constraints:
 1 <= nums[i] <= 100
 SOLUTION*/
 #include<vector>
-#include<iostream<
-using name
+#include<iostream>
+using namespace std;
+
+
+
 class Solution {
 public:
     bool check(vector<int>& nums) {
