@@ -53,17 +53,17 @@ Sum of wordsQuery[i].length is at most 5 * 105.
 SOLUTION*/
 #include <vector>
 #include <string>
-#include <algorithm>
 
 using namespace std;
 
-struct TrieNode {
-    TrieNode* children[26];
+// Using a flat structure with integers instead of pointers to save memory
+struct FlatNode {
+    int children[26];
     int bestIndex;
 
-    TrieNode() {
+    FlatNode() {
         for (int i = 0; i < 26; ++i) {
-            children[i] = nullptr;
+            children[i] = -1; // -1 means no child node exists
         }
         bestIndex = -1;
     }
@@ -71,66 +71,63 @@ struct TrieNode {
 
 class Solution {
 private:
-    TrieNode* root;
+    vector<FlatNode> trie;
 
-    // Helper to check if the current word is better than the existing best word at a node
     bool isBetter(int currIdx, int bestIdx, const vector<string>& words) {
         if (bestIdx == -1) return true;
-        if (words[currIdx].length() < words[bestIdx].length()) return true;
-        if (words[currIdx].length() == words[bestIdx].length()) return currIdx < bestIdx;
+        if (words[currIdx].size() < words[bestIdx].size()) return true;
+        if (words[currIdx].size() == words[bestIdx].size()) return currIdx < bestIdx;
         return false;
     }
 
     void insert(const string& word, int wordIdx, const vector<string>& words) {
-        TrieNode* curr = root;
+        int curr = 0; // Start at the root node (index 0)
         
-        // Update root node's best index
-        if (isBetter(wordIdx, curr->bestIndex, words)) {
-            curr->bestIndex = wordIdx;
+        if (isBetter(wordIdx, trie[curr].bestIndex, words)) {
+            trie[curr].bestIndex = wordIdx;
         }
 
-        // Insert characters from right to left (simulating reversal)
-        for (int i = word.length() - 1; i >= 0; --i) {
+        for (int i = word.size() - 1; i >= 0; --i) {
             int charIdx = word[i] - 'a';
-            if (!curr->children[charIdx]) {
-                curr->children[charIdx] = new TrieNode();
+            if (trie[curr].children[charIdx] == -1) {
+                trie.emplace_back(); // Create a new node in the vector
+                trie[curr].children[charIdx] = trie.size() - 1;
             }
-            curr = curr->children[charIdx];
+            curr = trie[curr].children[charIdx];
 
-            // Track the best word passing through this prefix node
-            if (isBetter(wordIdx, curr->bestIndex, words)) {
-                curr->bestIndex = wordIdx;
+            if (isBetter(wordIdx, trie[curr].bestIndex, words)) {
+                trie[curr].bestIndex = wordIdx;
             }
         }
     }
 
     int search(const string& query) {
-        TrieNode* curr = root;
-        int lastValidIndex = root->bestIndex;
+        int curr = 0;
+        int lastValidIndex = trie[0].bestIndex;
 
-        // Search characters from right to left (simulating reversal)
-        for (int i = query.length() - 1; i >= 0; --i) {
+        for (int i = query.size() - 1; i >= 0; --i) {
             int charIdx = query[i] - 'a';
-            if (!curr->children[charIdx]) {
+            if (trie[curr].children[charIdx] == -1) {
                 break;
             }
-            curr = curr->children[charIdx];
-            lastValidIndex = curr->bestIndex;
+            curr = trie[curr].children[charIdx];
+            lastValidIndex = trie[curr].bestIndex;
         }
         return lastValidIndex;
     }
 
 public:
     vector<int> stringIndices(vector<string>& wordsContainer, vector<string>& wordsQuery) {
-        root = new TrieNode();
+        // Clear and initialize the trie with a root node
+        trie.clear();
+        trie.emplace_back(); 
 
-        // 1. Build the Trie with wordsContainer
         for (int i = 0; i < wordsContainer.size(); ++i) {
             insert(wordsContainer[i], i, wordsContainer);
         }
 
-        // 2. Answer each query
         vector<int> ans;
+        ans.reserve(wordsQuery.size()); // Small optimization to prevent reallocations
         for (const string& query : wordsQuery) {
             ans.push_back(search(query));
         }
