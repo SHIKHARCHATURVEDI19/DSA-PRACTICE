@@ -1,9 +1,5 @@
 
-Code
-Testcase
-Testcase
-Test Result
-3501. Maximize Active Section with Trade II
+/*3501. Maximize Active Section with Trade II
 Hard
 Topics
 premium lock icon
@@ -107,8 +103,14 @@ Constraints:
 1 <= queries.length <= 105
 s[i] is either '0' or '1'.
 queries[i] = [li, ri]
-0 <= li <= ri < n
+0 <= li <= ri < n*/
 
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <initializer_list>
+
+using namespace std;
 
 class Solution {
 public:
