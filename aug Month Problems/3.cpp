@@ -1,4 +1,4 @@
-1406. Stone Game III
+/*1406. Stone Game III
 Solved
 Hard
 Topics
@@ -42,7 +42,7 @@ Explanation: Alice cannot win this game. She can end the game in a draw if she d
 Constraints:
 
 1 <= stoneValue.length <= 5 * 104
--1000 <= stoneValue[i] <= 1000
+-1000 <= stoneValue[i] <= 1000*/
 
 #include <vector>
 #include <string>
