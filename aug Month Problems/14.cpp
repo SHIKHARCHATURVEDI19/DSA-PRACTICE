@@ -5,7 +5,8 @@ Topics
 premium lock icon
 Companies
 Hint
-Given a string s, return the maximum length of a substring such that it contains at most two occurrences of each character.
+Given a string s, 
+return the maximum length of a substring such that it contains at most two occurrences of each character.
  
 
 Example 1:
