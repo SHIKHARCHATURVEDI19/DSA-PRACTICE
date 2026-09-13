@@ -1,34 +1,60 @@
-<<<<<<< HEAD
 class Solution {
 public:
-    int totalNumbers(vector<int>& digits) {
-        set<int> st;
-        int n = digits.size();
+    long long solve(int x) {
+        string s = to_string(x);
+        int n = s.size();
+        long long p = stoll(s.substr(0, (n + 1) / 2));
 
-        for (int i = 0; i < n; i++) {       // units
-            if (digits[i] % 2 != 0)
-                continue;
+        long long ans = 1e18;
 
-            for (int j = 0; j < n; j++) {   // tens
-                if (j == i)
-                    continue;
+        for (long long q = p - 2; q <= p + 2; q++) {
+            if (q <= 0) continue;
 
-                for (int k = 0; k < n; k++) { // hundreds
-                    if (k == i || k == j || digits[k] == 0)
-                        continue;
+            string a = to_string(q);
+            string b = a;
 
-                    int num = digits[k] * 100
-                            + digits[j] * 10
-                            + digits[i];
+            for (int i = n / 2 - 1; i >= 0; i--)
+                b += a[i];
 
-                    st.insert(num);
-                }
-            }
+            long long pal = stoll(b);
+
+            if (pal > 0 && (pal % 2 == x % 2))
+                ans = min(ans, abs((long long)x - pal) / 2);
         }
 
-        return st.size();
+        return ans;
+    }
+
+    long long minimumOperations(vector<int>& nums) {
+        vector<int> v = nums;
+
+        long long ans = 0;
+        for (int x : v)
+            ans += solve(x);
+
+        return ans;
     }
 };
-=======
-hi
->>>>>>> 5679b71 (lc)
+
+class Solution {
+public:
+    long long countShadowPairs(vector<int>& nums) {
+        vector<int> n= nums;
+
+        vector<int> st;
+        long long ans = 0;
+
+        for (int x : n) {
+        
+            while (!st.empty() && st.back() > x)
+                st.pop_back();
+
+            
+            ans += lower_bound(st.begin(), st.end(), x) - st.begin();
+
+            st.push_back(x);
+        }
+
+        return ans;
+    }
+};
