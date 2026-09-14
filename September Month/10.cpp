@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class Solution {
 public:
     int totalNumbers(vector<int>& digits) {
@@ -28,3 +29,6 @@ public:
         return st.size();
     }
 };
+=======
+hi
+>>>>>>> 5679b71 (lc)
